@@ -42,7 +42,7 @@ function Products() {
                         Retry
                     </button>
                 </div>
-                <p className="text-muted mt-3">
+                <div className="text-muted mt-3">
                     <small>
                         If this error persists, please ensure that:
                         <ul>
@@ -51,7 +51,7 @@ function Products() {
                             <li>Your browser allows cross-origin requests</li>
                         </ul>
                     </small>
-                </p>
+                </div>
             </div>
         );
     }
