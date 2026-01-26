@@ -4,15 +4,20 @@ import { Link } from 'react-router-dom';
 import { addToCart } from '../store/slices/cartSlice';
 import { getProducts } from '../store/slices/productSlice';
 
+
 function Products() {
-    const dispatch = useDispatch();
-    const { items: products, loading, error } = useSelector((state) => state.products);
+    let dispatch = useDispatch();
+    let products_list = useSelector((state) => state.products.items);
+    let is_loading = useSelector((state) => state.products.loading);
+    let error_msg = useSelector((state) => state.products.error);
 
     useEffect(() => {
+        
         dispatch(getProducts());
     }, [dispatch]);
 
-    if (loading) {
+    
+    if (is_loading) {
         return (
             <div className="container py-5 text-center">
                 <div className="spinner-border" role="status">
@@ -22,12 +27,13 @@ function Products() {
         );
     }
 
-    if (error) {
+    
+    if (error_msg) {
         return (
             <div className="container py-5">
                 <div className="alert alert-danger" role="alert">
                     <h4 className="alert-heading">Failed to Load Products</h4>
-                    <p>{error}</p>
+                    <p>{error_msg}</p>
                     <hr />
                     <button
                         className="btn btn-danger"
@@ -52,11 +58,12 @@ function Products() {
 
     return (
         <div className="container py-5">
-            <h1 className="mb-5">Products</h1>
+            <h1 className="mb-5">Products ({products_list.length})</h1>
             <div className="row g-4">
-                {products.map((product) => (
+                {products_list.map((product) => {
+                    return (
                     <div key={product.id} className="col-md-6 col-lg-4">
-                        <div className="card h-100 shadow-sm">
+                        <div className="card h-100 shadow-sm" style={{border: '1px solid #ddd', borderRadius: '4px'}}>
                             <div
                                 style={{
                                     height: '250px',
@@ -65,6 +72,8 @@ function Products() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
+                                    paddingTop: '10px',
+                                    paddingBottom: '10px'
                                 }}
                             >
                                 <img
@@ -96,11 +105,16 @@ function Products() {
                                             to={`/products/${product.id}`}
                                             className="btn btn-outline-primary flex-grow-1"
                                         >
-                                            View
+                                            View Details
                                         </Link>
                                         <button
                                             className="btn btn-danger"
-                                            onClick={() => dispatch(addToCart(product))}
+                                            onClick={() => {
+                                                
+                                                dispatch(addToCart(product));
+                                                
+                                            }}
+                                            style={{marginLeft: '5px'}}
                                         >
                                             Add to Cart
                                         </button>
@@ -109,10 +123,16 @@ function Products() {
                             </div>
                         </div>
                     </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
 }
 
 export default Products;
+
+
+
+
+

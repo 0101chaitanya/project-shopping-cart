@@ -1,32 +1,4 @@
-/**
- * Shopping Carts API Redux Slice (store/slices/cartsSlice.js)
- *
- * Manages shopping cart data from the API:
- * - All carts in the system
- * - Selected individual cart details
- * - Carts for a specific user
- * - Loading and error states
- *
- * Note: This is different from cartSlice which manages the user's personal shopping cart
- * This slice deals with browsing all carts in the system.
- *
- * Async Thunks:
- * - getAllCarts: Fetch all carts from API
- * - getCartById: Fetch single cart by ID
- * - getUserCarts: Fetch carts for specific user
- *
- * State:
- * - list: Array of all carts
- * - selectedCart: Currently viewed cart
- * - userCarts: Carts filtered by user
- * - loading: API request in progress
- * - error: Error message if request fails
- *
- * Usage:
- * dispatch(getAllCarts()) - Load all carts
- * dispatch(getCartById(id)) - Load specific cart
- * dispatch(getUserCarts(userId)) - Load user's carts
- */
+
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
@@ -35,12 +7,7 @@ import {
   fetchUserCarts,
 } from "../../api/fakeStoreApi";
 
-/**
- * Async thunk to fetch all carts
- * @async
- * @returns {Promise<Array>} All carts from API
- * @throws {Error} If API request fails
- */
+
 export const getAllCarts = createAsyncThunk(
   "carts/getAllCarts",
   async (_, { rejectWithValue }) => {
@@ -55,13 +22,7 @@ export const getAllCarts = createAsyncThunk(
   }
 );
 
-/**
- * Async thunk to fetch single cart by ID
- * @async
- * @param {number} id - Cart ID to fetch
- * @returns {Promise<Object>} Cart details
- * @throws {Error} If API request fails
- */
+
 export const getCartById = createAsyncThunk(
   "carts/getCartById",
   async (id, { rejectWithValue }) => {
@@ -76,13 +37,7 @@ export const getCartById = createAsyncThunk(
   }
 );
 
-/**
- * Async thunk to fetch carts for a specific user
- * @async
- * @param {number} userId - User ID to fetch carts for
- * @returns {Promise<Array>} User's carts
- * @throws {Error} If API request fails
- */
+
 export const getUserCarts = createAsyncThunk(
   "carts/getUserCarts",
   async (userId, { rejectWithValue }) => {
@@ -100,16 +55,14 @@ export const getUserCarts = createAsyncThunk(
 const cartsSlice = createSlice({
   name: "carts",
   initialState: {
-    list: [], // Array of all carts
-    selectedCart: null, // Currently selected cart
-    userCarts: [], // Carts for a specific user
-    loading: false, // Loading indicator
-    error: null, // Error message
+    list: [], 
+    selectedCart: null, 
+    userCarts: [], 
+    loading: false, 
+    error: null, 
   },
   reducers: {
-    /**
-     * Clear the selected cart from state
-     */
+    
     clearSelectedCart: (state) => {
       state.selectedCart = null;
     },
@@ -157,3 +110,6 @@ const cartsSlice = createSlice({
 
 export const { clearSelectedCart } = cartsSlice.actions;
 export default cartsSlice.reducer;
+
+
+

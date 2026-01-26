@@ -1,62 +1,31 @@
-/**
- * Navbar Component (components/Navbar.jsx)
- * 
- * Main navigation bar appearing on all pages
- * Features:
- * - Sticky positioning (stays at top while scrolling)
- * - Responsive design (collapses on mobile)
- * - Shopping cart item count badge
- * - Authentication status indicator
- * - Dropdown menu for browsing users and carts
- * 
- * Navigation Links:
- * - Home: /
- * - Features: /features
- * - Products: /products
- * - Browse Dropdown:
- *   - Users: /users
- *   - All Carts: /carts
- * - Shopping Cart: /cart (with item count badge)
- * - Login/Logout: /login (conditional based on auth)
- * 
- * Responsive Behavior:
- * - Expands on desktop (navbar-expand-lg)
- * - Collapses into hamburger menu on mobile
- */
+
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store/slices/authSlice';
 import './Navbar.css';
 
-/**
- * Navbar Component
- * Provides navigation and authentication UI
- */
+
 function Navbar() {
-    const dispatch = useDispatch();
+    let dispatch = useDispatch();
 
-    // Get cart items count and auth state from Redux
-    const cartItems = useSelector((state) => state.cart.totalQuantity);
-    const { isAuthenticated, user } = useSelector((state) => state.auth);
+    
+    let num_items = useSelector((state) => state.cart.totalQuantity);
+    let is_authenticated = useSelector((state) => state.auth.isAuthenticated);
+    let user_name = useSelector((state) => state.auth.user);
 
-    /**
-     * Handle logout action
-     * Clears auth state and redirects to home
-     */
-    const handleLogout = () => {
+    
+    let handleLogout = () => {
         dispatch(logout());
+        
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style={{boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
             <div className="container-fluid">
-                {/* Brand/Logo */}
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" to="/" style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#ff6b6b'}}>
                     <span className="fw-bold">Chaitanya Kart</span>
                 </Link>
-
-                {/* Mobile toggle button */}
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -65,25 +34,18 @@ function Navbar() {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-
-                {/* Navbar content */}
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
-                        {/* Features Link */}
                         <li className="nav-item">
-                            <Link className="nav-link" to="/features">
+                            <Link className="nav-link" to="/features" style={{cursor: 'pointer'}}>
                                 Features
                             </Link>
                         </li>
-
-                        {/* Products Link */}
                         <li className="nav-item">
                             <Link className="nav-link" to="/products">
                                 Products
                             </Link>
                         </li>
-
-                        {/* Browse Dropdown */}
                         <li className="nav-item dropdown">
                             <a
                                 className="nav-link dropdown-toggle"
@@ -108,38 +70,30 @@ function Navbar() {
                                 </li>
                             </ul>
                         </li>
-
-                        {/* Shopping Cart with Badge */}
                         <li className="nav-item">
-                            <Link className="nav-link" to="/cart">
-                                Cart <span className="badge bg-danger">{cartItems}</span>
+                            <Link className="nav-link" to="/cart" style={{position: 'relative'}}>
+                                Cart <span className="badge bg-danger" style={{marginLeft: '5px'}}>{num_items}</span>
                             </Link>
                         </li>
-
-                        {/* Authentication Section */}
-                        {isAuthenticated ? (
-                            <>
-                                {/* Welcome Message */}
-                                <li className="nav-item">
-                                    <span className="nav-link">
-                                        Welcome, <strong>{user}</strong>
-                                    </span>
-                                </li>
-
-                                {/* Logout Button */}
-                                <li className="nav-item">
-                                    <button
-                                        className="nav-link btn btn-link"
-                                        onClick={handleLogout}
-                                    >
-                                        Logout
-                                    </button>
-                                </li>
-                            </>
-                        ) : (
-                            /* Login Link */
+                        {is_authenticated ? (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/login">
+                                <span className="nav-link" style={{marginRight: '10px'}}>
+                                    Welcome, <strong>{user_name}</strong>
+                                </span>
+                                <button
+                                    className="nav-link btn btn-link"
+                                    onClick={() => {
+                                        handleLogout();
+                                        
+                                    }}
+                                    style={{border: 'none', cursor: 'pointer'}}
+                                >
+                                    Logout
+                                </button>
+                            </li>
+                        ) : (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/login" style={{color: '#ff6b6b'}}>
                                     Login
                                 </Link>
                             </li>
@@ -152,3 +106,6 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+

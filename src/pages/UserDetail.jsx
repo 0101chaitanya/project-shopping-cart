@@ -83,16 +83,11 @@ function UserDetail() {
                     <div className="card shadow-sm">
                         <div className="card-body">
                             <h5 className="card-title mb-4">Company</h5>
-                            {selectedUser.company ? (
-                                <>
-                                    <p className="mb-2">
-                                        <strong>{selectedUser.company.name}</strong>
-                                    </p>
-                                    <p className="text-muted small mb-2">
-                                        {selectedUser.company.catchPhrase}
-                                    </p>
-                                </>
-                            ) : (
+                            {selectedUser.company ? (<><p className="mb-2">
+                                <strong>{selectedUser.company.name}</strong>
+                            </p><p className="text-muted small mb-2">
+                                    {selectedUser.company.catchPhrase}
+                                </p></>) : (
                                 <p className="text-muted">No company information</p>
                             )}
                         </div>
@@ -104,3 +99,7 @@ function UserDetail() {
 }
 
 export default UserDetail;
+
+
+
+

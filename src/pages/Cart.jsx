@@ -2,11 +2,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { clearCart, removeFromCart, updateQuantity } from '../store/slices/cartSlice';
 
-function Cart() {
-    const dispatch = useDispatch();
-    const { items, totalPrice, totalQuantity } = useSelector((state) => state.cart);
 
-    if (items.length === 0) {
+function Cart() {
+    let dispatch = useDispatch();
+    let cart_items = useSelector((state) => state.cart.items);
+    let cart_total_price = useSelector((state) => state.cart.totalPrice);
+    let cart_total_qty = useSelector((state) => state.cart.totalQuantity);
+
+    
+    if (cart_items.length === 0) {
         return (
             <div className="container py-5">
                 <div className="text-center">
@@ -22,13 +26,13 @@ function Cart() {
 
     return (
         <div className="container py-5">
-            <h1 className="mb-5">Shopping Cart</h1>
+            <h1 className="mb-5">Shopping Cart ({cart_total_qty} items)</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    <div className="card shadow-sm">
+                    <div className="card shadow-sm" style={{border: '1px solid #ddd'}}>
                         <div className="card-body">
-                            {items.map((item) => (
-                                <div key={item.id} className="row border-bottom pb-4 mb-4">
+                            {cart_items.map((item) => (
+                                <div key={item.id} className="row border-bottom pb-4 mb-4" style={{alignItems: 'center'}}>
                                     <div className="col-md-2">
                                         <div
                                             style={{
@@ -67,14 +71,19 @@ function Cart() {
                                             <div className="input-group" style={{ width: '120px' }}>
                                                 <button
                                                     className="btn btn-outline-secondary"
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                        
+                                                        let new_qty = item.quantity - 1;
+                                                        if (new_qty < 1) {
+                                                            new_qty = 1;
+                                                        }
                                                         dispatch(
                                                             updateQuantity({
                                                                 id: item.id,
-                                                                quantity: Math.max(1, item.quantity - 1),
+                                                                quantity: new_qty,
                                                             })
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                 >
                                                     -
                                                 </button>
@@ -86,14 +95,16 @@ function Cart() {
                                                 />
                                                 <button
                                                     className="btn btn-outline-secondary"
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                        
                                                         dispatch(
                                                             updateQuantity({
                                                                 id: item.id,
                                                                 quantity: item.quantity + 1,
                                                             })
-                                                        )
-                                                    }
+                                                        );
+                                                        
+                                                    }}
                                                 >
                                                     +
                                                 </button>
@@ -113,27 +124,37 @@ function Cart() {
                 </div>
 
                 <div className="col-lg-4">
-                    <div className="card shadow-sm sticky-top" style={{ top: '20px' }}>
+                    <div className="card shadow-sm sticky-top" style={{ top: '20px', border: '2px solid #ff6b6b' }}>
                         <div className="card-body">
                             <h5 className="card-title mb-4">Order Summary</h5>
                             <div className="d-flex justify-content-between mb-3">
                                 <span>Subtotal:</span>
-                                <span>${totalPrice.toFixed(2)}</span>
+                                <span>${cart_total_price.toFixed(2)}</span>
                             </div>
                             <div className="d-flex justify-content-between mb-3">
-                                <span>Items:</span>
-                                <span>{totalQuantity}</span>
+                                <span>Items in cart:</span>
+                                <span>{cart_total_qty}</span>
                             </div>
-                            <div className="d-flex justify-content-between mb-4 fw-bold">
+<div className="d-flex justify-content-between mb-4 fw-bold" style={{fontSize: '1.2rem'}}>
                                 <span>Total:</span>
-                                <span>${totalPrice.toFixed(2)}</span>
+                                <span style={{color: '#ff6b6b'}}>${cart_total_price.toFixed(2)}</span>
                             </div>
-                            <button className="btn btn-danger w-100 mb-2">
+                            <button 
+                                className="btn btn-danger w-100 mb-2"
+                                onClick={() => {
+                                    
+                                    alert("Checkout not yet implemented");
+                                }}
+                            >
                                 Proceed to Checkout
                             </button>
                             <button
                                 className="btn btn-outline-danger w-100 mb-2"
-                                onClick={() => dispatch(clearCart())}
+                                onClick={() => {
+                                    
+                                    dispatch(clearCart());
+                                    
+                                }}
                             >
                                 Clear Cart
                             </button>
@@ -149,3 +170,7 @@ function Cart() {
 }
 
 export default Cart;
+
+
+
+

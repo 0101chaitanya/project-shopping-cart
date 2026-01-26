@@ -1,35 +1,8 @@
-/**
- * Users Redux Slice (store/slices/usersSlice.js)
- *
- * Manages user data from the API:
- * - All users listing
- * - Selected individual user details
- * - Loading and error states
- *
- * Async Thunks:
- * - getUsers: Fetch all users from API
- * - getUserById: Fetch single user by ID
- *
- * State:
- * - list: Array of all users
- * - selectedUser: Currently viewed user details
- * - loading: API request in progress
- * - error: Error message if request fails
- *
- * Usage:
- * dispatch(getUsers()) - Load all users
- * dispatch(getUserById(id)) - Load specific user
- */
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchUserById, fetchUsers } from "../../api/fakeStoreApi";
 
-/**
- * Async thunk to fetch all users
- * @async
- * @returns {Promise<Array>} All users from API
- * @throws {Error} If API request fails
- */
+
+
 export const getUsers = createAsyncThunk(
   "users/getUsers",
   async (_, { rejectWithValue }) => {
@@ -44,13 +17,7 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-/**
- * Async thunk to fetch single user by ID
- * @async
- * @param {number} id - User ID to fetch
- * @returns {Promise<Object>} User details
- * @throws {Error} If API request fails
- */
+
 export const getUserById = createAsyncThunk(
   "users/getUserById",
   async (id, { rejectWithValue }) => {
@@ -68,15 +35,13 @@ export const getUserById = createAsyncThunk(
 const usersSlice = createSlice({
   name: "users",
   initialState: {
-    list: [], // Array of all users
-    selectedUser: null, // Currently selected user
-    loading: false, // Loading indicator
-    error: null, // Error message
+    list: [], 
+    selectedUser: null, 
+    loading: false, 
+    error: null, 
   },
   reducers: {
-    /**
-     * Clear the selected user from state
-     */
+    
     clearSelectedUser: (state) => {
       state.selectedUser = null;
     },
@@ -112,3 +77,6 @@ const usersSlice = createSlice({
 
 export const { clearSelectedUser } = usersSlice.actions;
 export default usersSlice.reducer;
+
+
+

@@ -1,60 +1,36 @@
-/**
- * Login Page Component
- * 
- * Provides user authentication interface with:
- * - Username and password input fields
- * - Form submission with Redux dispatch
- * - Error message display
- * - Loading state feedback
- * - Auto-redirect if already authenticated
- * - Demo credentials display for testing
- * 
- * On successful login, dispatches loginUser action which:
- * 1. Calls API with credentials
- * 2. Receives JWT token
- * 3. Stores token in localStorage
- * 4. Updates Redux auth state
- * 5. Redirects to dashboard
- */
-
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearError, loginUser } from '../store/slices/authSlice';
 
-/**
- * Login Component
- * Renders the login form and handles user authentication
- */
+
 function Login() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    let dispatch = useDispatch();
+    let navigate = useNavigate();
 
-    // Get auth state from Redux store
-    const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+    
+    let loading = useSelector((state) => state.auth.loading);
+    let error = useSelector((state) => state.auth.error);
+    let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-    // Local form state
+    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    // Redirect if already authenticated - prevents accessing login when already logged in
+    
     if (isAuthenticated) {
         navigate('/dashboard');
     }
 
-    /**
-     * Handle form submission
-     * Validates credentials and dispatches login action
-     */
-    const handleSubmit = async (e) => {
+    
+    let handleSubmit = async (e) => {
         e.preventDefault();
-        // Clear any previous error messages
         dispatch(clearError());
 
-        // Dispatch login action and wait for response
-        const result = await dispatch(loginUser({ username, password }));
+        
+        let result = await dispatch(loginUser({ username, password }));
 
-        // If login was successful, redirect to dashboard
+        
         if (result.meta.requestStatus === 'fulfilled') {
             navigate('/dashboard');
         }
@@ -67,11 +43,7 @@ function Login() {
                     <div className="card shadow-lg">
                         <div className="card-body p-5">
                             <h2 className="card-title text-center mb-4">Login</h2>
-
-                            {/* Display error message if login failed */}
                             {error && <div className="alert alert-danger">{error}</div>}
-
-                            {/* Login Form */}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label className="form-label">Username</label>
@@ -79,7 +51,10 @@ function Login() {
                                         type="text"
                                         className="form-control"
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        onChange={(e) => {
+                                            setUsername(e.target.value);
+                                            
+                                        }}
                                         required
                                         disabled={loading}
                                         placeholder="Enter your username"
@@ -91,14 +66,15 @@ function Login() {
                                         type="password"
                                         className="form-control"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            
+                                        }}
                                         required
                                         disabled={loading}
                                         placeholder="Enter your password"
                                     />
                                 </div>
-
-                                {/* Submit Button - disabled during loading */}
                                 <button
                                     type="submit"
                                     className="btn btn-danger w-100"
@@ -107,8 +83,6 @@ function Login() {
                                     {loading ? 'Logging in...' : 'Login'}
                                 </button>
                             </form>
-
-                            {/* Demo Credentials Section for Testing */}
                             <div className="mt-4 text-center text-muted">
                                 <p className="fw-bold mb-2">Demo Credentials:</p>
                                 <small>username: mor_2314</small>
@@ -129,3 +103,7 @@ function Login() {
 }
 
 export default Login;
+
+
+
+
