@@ -76,17 +76,14 @@ function Navbar() {
                             </Link>
                         </li>
                         {is_authenticated ? (
-                            <li className="nav-item">
-                                <span className="nav-link" style={{marginRight: '10px'}}>
+                            <li className="nav-item d-flex align-items-center">
+                                <span className="nav-link" style={{marginRight: '10px', padding: '0'}}>
                                     Welcome, <strong>{user_name}</strong>
                                 </span>
                                 <button
-                                    className="nav-link btn btn-link"
-                                    onClick={() => {
-                                        handleLogout();
-                                        
-                                    }}
-                                    style={{border: 'none', cursor: 'pointer'}}
+                                    className="btn btn-link nav-link"
+                                    onClick={handleLogout}
+                                    style={{border: 'none', cursor: 'pointer', padding: '0'}}
                                 >
                                     Logout
                                 </button>
