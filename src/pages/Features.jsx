@@ -95,22 +95,24 @@ function Features() {
                 {features.map((feature, index) => (
                     <div key={index} className="col-md-6 col-lg-4">
                         <div className="card h-100 shadow-sm">
-                            <div className="card-body">
-                                <h2 className="mb-2">{feature.icon}</h2>
-                                <h5 className="card-title mb-2">{feature.title}</h5>
-                                <p className="card-text text-muted mb-3">
-                                    {feature.description}
-                                </p>
-                                <ul className="list-unstyled mb-4">
-                                    {feature.items.map((item, i) => (
-                                        <li key={i} className="mb-2">
-                                            <small>✓ {item}</small>
-                                        </li>
-                                    ))}
-                                </ul>
+                            <div className="card-body h-100 d-flex flex-column justify-content-between">
+                                <div className="d-flex flex-column">
+                                    <h2 className="mb-2">{feature.icon}</h2>
+                                    <h5 className="card-title mb-2">{feature.title}</h5>
+                                    <p className="card-text text-muted mb-3">
+                                        {feature.description}
+                                    </p>
+                                    <ul className="list-unstyled mb-4">
+                                        {feature.items.map((item, i) => (
+                                            <li key={i} className="mb-2">
+                                                <small>✓ {item}</small>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                                 <Link
                                     to={feature.link}
-                                    className="btn btn-danger w-100"
+                                    className="btn btn-danger w-100 "
                                 >
                                     Explore {feature.title}
                                 </Link>
@@ -166,7 +168,3 @@ function Features() {
 }
 
 export default Features;
-
-
-
-
